@@ -1,0 +1,51 @@
+
+
+/*** JLL.S2016042800: Support for jll_callstack(0) - setprop persist.sys.jll_callstack ***/
+#include <string.h>
+#include <cutils/properties.h>
+#include <utils/CallStack.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+static int i4JllCallstackPropVal = property_get_int32("persist.sys.jll_callstack", 0);
+#define jll_callstack(bit) \
+            if (i4JllCallstackPropVal && (i4JllCallstackPropVal & (0x1 << (bit)))) { \
+                android::CallStack tCS;                                              \
+                tCS.update();                                                        \
+                tCS.log("jll_callstack");                                            \
+                __android_log_print(ANDROID_LOG_INFO, "JLL",                         \
+                    "===== Above callstack occurred AT %s@%d,%s",                    \
+                    __FUNCTION__, __LINE__, __FILE__);                               \
+            }
+#ifdef __cplusplus
+}
+#endif
+/*** JLL.E2016042800: Support for jll_callstack(0) - setprop persist.sys.jll_callstack ***/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+----------------
+Android.mk:
+----------------
+### JLL.S2016042800: Support for jll_callstack(0) - setprop persist.sys.jll_callstack
+LOCAL_C_INCLUDES +=$(LOCAL_PATH)/../../../../../system/core/include
+LOCAL_SHARED_LIBRARIES += libutils  # Support for android::CallStack
+LOCAL_SHARED_LIBRARIES += libcutils # Support for property_get(...)
+### JLL.E2016042800: Support for jll_callstack(0) - setprop persist.sys.jll_callstack
+

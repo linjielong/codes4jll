@@ -1,0 +1,84 @@
+/*
+ * Copyright (c) 2013-2100.  jielong_lin(493164984@qq.com).  All rights reserved.
+ */
+/* File Name:        dump.c
+ * Original Author:  jielong_lin,  2013-03-22.
+ * Function:         Dumping the any data in the user space.
+ */
+
+#include <stdio.h>
+#include <ctype.h>
+
+#define NR_KBD_USER_DUMP   (1024 * 1024 * 10)
+
+/**
+ * jlldump - 用户数据的dump接口
+ * @start: 用户数据的起始地址
+ * @size:  用户数据的字节大小, 不允许超出10MB.
+ *
+ * 在终端上显示任何数据,其显示的格式如下实例:
+ * 00000000: 68 65 6c 6c 6f 20 77 6f 72 6c 64 2c 20 78 78 78 | hello world, xxx
+ * 00000016: 78 20 79 79 79 79 20 7a 7a 7a 7a 20 61 61 61 61 | x yyyy zzzz aaaa
+ * 00000032: 20 62 62 62 62 62 62 62 62 62 62 20 2b 2d 2a 2a |  bbbbbbbbbb +-**
+ * 00000048: 20 30 31 32 33 34 35 36 37 38 39 00 00 00 00 00 |  0123456789.....
+ * 00000064: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 | ................
+ * 00000080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 | ................
+ * 00000096: 00 00 00 00                                     | ....
+ */
+void  jlldump(unsigned char *start, size_t size)
+{
+    int   row;
+    int   col;
+    unsigned char ch;
+
+    if (start == NULL || size == 0 || size > NR_KBD_USER_DUMP) {
+        return ;
+    }
+
+    printf("\n\r");
+
+    for (row = 0; row < (int)(size / 16); row++) {
+        /* Offset address */
+        printf("%08u: ", row * 16);
+
+        /* Hexadecimal Notation Table */
+        for (col = 0; col < 16; col++) {
+            printf("%02x ", start[row * 16 + col]);
+        }
+        printf("| ");
+
+        /* Visiable Character Table */
+        for (col = 0; col < 16; col++) {
+            ch = start[row * 16 + col];
+            isprint(ch) ? printf("%c", ch) : printf(".");
+        }
+        printf("\n\r");
+    }
+
+    if (size % 16) {
+        /* Offset address */
+        printf("%08u: ", row * 16);
+
+        /* Hexadecimal Notation Table */
+        for (col = 0; col < 16; col++) {
+            if (col < (int)(size % 16)) {
+                printf("%02x ", start[row * 16 + col]);
+            } else {
+                printf("   "); /* output three spaces */
+            }
+        }
+        printf("| ");
+
+        /* Visiable Character Table */
+        for (col = 0; col < 16; col++) {
+            if (col < (int)(size % 16)) {
+                ch = start[row * 16 + col];
+                isprint(ch) ? printf("%c", ch) : printf(".");
+            }
+        }
+        printf("\n\r");
+    }
+    printf("\n\r");
+
+    return ;
+}

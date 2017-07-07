@@ -1,0 +1,21 @@
+
+补充下:编程调试手段之宏打印
+
+必须包含头文件 stdarg.h
+当你需要调试时,请定义 CONFIG_DEBUG 为1
+
+#define CONFIG_DEBUG   1
+
+#if  CONFIG_DEBUG
+#include <stdarg.h>
+#define DEBUG(fmt, ...)   printf("[%s:%d]" fmt, __FILE__,  __LINE__, ##__VA_ARGS__)
+#else
+#define DEBUG
+#endif
+
+int main(int argc, char **argv)
+{
+    DEBUG("hello world, argc=%d, argv[1]=%s\r\n", argc, argv[1]);
+
+    return 0;
+}
