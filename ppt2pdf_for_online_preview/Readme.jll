@@ -1,0 +1,45 @@
+
+Run in MS System such as windows7 with ms office
+
+#(1).create a direcotry named wwwroot
+#(2).Clict Runer_FOR_export_pdf_from_ppt_in_msdos.bat to generate pdf into wwwroot according to
+     ppt files which are in the current.
+#(3).If Http Server can access wwwroot, you will can preview this pdf.
+
+My Environment:
+
+Ubuntu 12.04:
+  /Repository/projects/deplayer/Documents/
+                                      |--- deplayer_design_draftbook.ppt
+                                      |--- export_pdf_from_ppt_by_msoffice.vbs 
+                                      |--- Runer_FOR_export_pdf_from_ppt_in_msdos.bat 
+                                      |--- wwwroot/ 
+ Samba Server:
+    (1).Map /Repository/projects/deplayer/Documents to T: in Windows7
+    (2)./etc/samba/smb.conf
+         340
+         341 [deplayer]
+         342    comment = debugging player project documents
+         343    read only = no
+         344    locking = no
+         345    path = /Repository/projects/deplayer/Documents
+         346    guest ok = yes
+         347    browseable = yes
+         348    write list = root, @jielong.lin
+         349    create mask = 0744
+         350    directory mask = 0744
+         351    veto files=/.*/
+
+  Apache2.2 Server:
+    (1).Provide http access to /Repository/projects/deplayer/Documents/wwwroot
+    (2)./etc/apache2/conf.d/deplayer_documents_FOR_pdf_js
+         1 Alias /deplayer /Repository/projects/deplayer/Documents/wwwroot
+         2
+         3 <Directory /Repository/projects/deplayer/Documents/wwwroot>
+         4     Options Indexes FollowSymLinks MultiViews
+         5     AllowOverride All
+         6     Order allow,deny
+         7     allow from all
+         8 </Directory>
+         9
+
