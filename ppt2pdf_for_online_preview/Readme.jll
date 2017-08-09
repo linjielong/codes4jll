@@ -26,8 +26,8 @@ Ubuntu 12.04:
          346    guest ok = yes
          347    browseable = yes
          348    write list = root, @jielong.lin
-         349    create mask = 0744
-         350    directory mask = 0744
+         349    create mask = 0755
+         350    directory mask = 0755
          351    veto files=/.*/
 
   Apache2.2 Server:
