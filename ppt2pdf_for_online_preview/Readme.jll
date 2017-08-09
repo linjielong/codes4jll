@@ -1,8 +1,15 @@
 
+===========================================================
+Scheme-1: Use the PPT module function to perform convertion
+Abandon because not automatically trigger execute VBA code. 
+-----------------------------------------------------------
+PPT2PDF.bas should be imported into PPT.
+
+
 
 
 ===========================================================
-Scheme-1: Use a bat to run vbs for ppt is converted to pdf
+Scheme-2: Use a bat to run vbs for ppt is converted to pdf
 -----------------------------------------------------------
 Run in MS System such as windows7 with ms office
 

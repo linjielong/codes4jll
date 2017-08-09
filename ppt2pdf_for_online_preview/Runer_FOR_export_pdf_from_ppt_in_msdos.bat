@@ -12,9 +12,17 @@ FOR /f "tokens=1 delims=" %%i IN ( ' dir *.ppt /B 2^> NUL ' ) DO (
         DEL /F /Q "%CD%wwwroot\%%~ni.pdf"
         ECHO.
     )
-    ECHO Start to Export "%%~ni.pdf" from "%%i"
+    IF not exist "%CD%wwwroot" (
+        ECHO Creating "%CD%wwwroot" ...
+        MKDIR "%CD%wwwroot"
+        ECHO.
+    )
+    ECHO Start to Export "%%~ni.pdf" 
+    ECHO       from "%%i"
+    ECHO.
     CSCRIPT export_pdf_from_ppt_by_msoffice.vbs "%CD%%%i" "%CD%wwwroot\%%~ni.pdf"
-    ECHO End to Export "%%~ni.pdf" from "%%i"
+    ECHO End to Export "%%~ni.pdf" 
+    ECHO     from "%%i"
     ECHO.
 )
 ECHO.
@@ -26,11 +34,20 @@ FOR /f "tokens=1 delims=" %%i IN ( ' dir *.pptx /B 2^> NUL ' ) DO (
         DEL /F /Q "%CD%wwwroot\%%~ni.pdf"
         ECHO.
     )
-    ECHO Start to Export "%%~ni.pdf" from "%%i"
+    IF not exist "%CD%wwwroot" (
+        ECHO Creating "%CD%wwwroot" ...
+        MKDIR "%CD%wwwroot"
+        ECHO.
+    )
+    ECHO Start to Export "%%~ni.pdf" 
+    ECHO       from "%%i"
+    ECHO.
     CSCRIPT export_pdf_from_ppt_by_msoffice.vbs "%CD%%%i" "%CD%wwwroot\%%~ni.pdf"
-    ECHO End to Export "%%~ni.pdf" from "%%i"
+    ECHO End to Export "%%~ni.pdf" 
+    ECHO       from "%%i"
     ECHO.
 )
 ECHO.
 
-PAUSE
+rem PAUSE
+timeout 10
